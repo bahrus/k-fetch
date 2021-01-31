@@ -11,7 +11,12 @@ export class KFetch extends HTMLElement {
     }
     do() {
         const href = this.getAttribute('href');
+        if (href === this._lastHref)
+            return;
+        this._lastHref = href;
         const as = this.getAttribute('as');
+        if (as === null)
+            return;
         fetch(href).then(resp => {
             switch (as) {
                 case 'json':
@@ -24,11 +29,17 @@ export class KFetch extends HTMLElement {
                     });
                 case 'html':
                     resp.text().then(html => {
-                        this.innerHTML = html;
+                        let root = this;
+                        if (this.hasAttribute('shadow')) {
+                            if (this.shadowRoot === null)
+                                this.attachShadow({ mode: 'open' });
+                            root = this.shadowRoot;
+                        }
+                        root.innerHTML = html;
                     });
             }
         });
     }
 }
-KFetch.observedAttributes = ['href', 'as'];
+KFetch.observedAttributes = ['href', 'as', 'shadow'];
 customElements.define('k-fetch', KFetch);

@@ -3,16 +3,18 @@
 
 <img src="https://badgen.net/bundlephobia/minzip/k-fetch">
 
-k-fetch is a small, simple fetch web component.  For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch).
+## [Demo](https://jsfiddle.net/bahrus/ma0vtbnx/1/)
+
+k-fetch is a small, bare-bones simple fetch web component.  For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch).
 
 Syntax:
 
 ```html
-<k-fetch href=... as=json|html></k-fetch>
+<k-fetch href=... as=json|html [shadow]></k-fetch>
 ```
 
 If as=json, a custom event, "fetch-complete" is fired, with the data in the detail.  The data is also stored in the "value" field of k-fetch.
 
-If as=html, the response is inserted into the innerHTML of the k-fetch element.
+If as=html, the response is inserted into the innerHTML of the k-fetch element, unless attribute shadow is present, in which case it will first create a shadowRoot, then insert the innerHTML.
 
-k-fetch doesn't respond to changes in the href or as attribute.  Nor does it support href or as properties.
+k-fetch has no support for "href" or "as" properties, only attributes.
