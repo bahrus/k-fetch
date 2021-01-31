@@ -1,6 +1,6 @@
 {
   "name": "k-fetch",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "k-fetch.js",
   "module": "k-fetch.js",
