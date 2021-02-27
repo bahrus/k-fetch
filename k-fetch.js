@@ -27,6 +27,7 @@ export class KFetch extends HTMLElement {
                         detail: data,
                     }));
                 });
+                break;
             case 'html':
                 resp.text().then(html => {
                     let root = this;
@@ -37,6 +38,7 @@ export class KFetch extends HTMLElement {
                     }
                     root.innerHTML = html;
                 });
+                break;
         }
     }
 }
