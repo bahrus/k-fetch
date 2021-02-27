@@ -7,33 +7,33 @@ export class KFetch extends HTMLElement{
         this.do();
     }
     _lastHref: string | undefined;
-    do(){
+    async do(){
         const href = this.getAttribute('href');
         if(href === this._lastHref) return;
-        this._lastHref = href!;
+        
         const as = this.getAttribute('as');
-        if(as===null) return;
-        fetch(href!).then(resp => {
-            switch(as){
-                case 'json':
-                    this.style.display = 'none';
-                    resp.json().then(data => {
-                        this.value = data;
-                        this.dispatchEvent(new CustomEvent('fetch-complete', {
-                            detail: data,
-                        }))
-                    });
-                case 'html':
-                    resp.text().then(html => {
-                        let root : HTMLElement | ShadowRoot = this;
-                        if(this.hasAttribute('shadow')){
-                            if(this.shadowRoot === null) this.attachShadow({mode: 'open'});
-                            root = this.shadowRoot!;
-                        }
-                        root.innerHTML = html;
-                    })
-            }
-        })
+        if(as===null || href===null) return;
+        this._lastHref = href!;
+        const resp = await fetch(href!);
+        switch(as){
+            case 'json':
+                this.style.display = 'none';
+                resp.json().then(data => {
+                    this.value = data;
+                    this.dispatchEvent(new CustomEvent('fetch-complete', {
+                        detail: data,
+                    }))
+                });
+            case 'html':
+                resp.text().then(html => {
+                    let root : HTMLElement | ShadowRoot = this;
+                    if(this.hasAttribute('shadow')){
+                        if(this.shadowRoot === null) this.attachShadow({mode: 'open'});
+                        root = this.shadowRoot!;
+                    }
+                    root.innerHTML = html;
+                })
+        }
     }
     value = null;
 }
