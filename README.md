@@ -10,7 +10,7 @@ k-fetch is a small, bare-bones simple fetch web component.  For more features (b
 Syntax:
 
 ```html
-<k-fetch href=... as=json|html [shadow]></k-fetch>
+<k-fetch href=... as=json|text|html [shadow]></k-fetch>
 ```
 
 If as=json, a custom event, "fetch-complete" is fired, with the data in the detail.  The data is also stored in the "value" field of k-fetch.

@@ -22,7 +22,7 @@ export class KFetch extends HTMLElement{
                     this.value = data;
                     this.dispatchEvent(new CustomEvent('fetch-complete', {
                         detail: data,
-                    }))
+                    }));
                 });
                 break;
             case 'html':
@@ -35,8 +35,16 @@ export class KFetch extends HTMLElement{
                     root.innerHTML = html;
                 });
                 break;
+            case 'text':
+                this.style.display = 'none';
+                resp.text().then(text=> {
+                    this.value = text;
+                    this.dispatchEvent(new CustomEvent('fetch-complete', {
+                        detail: text,
+                    }));
+                });
         }
     }
-    value = null;
+    value: any;
 }
 customElements.define('k-fetch', KFetch);

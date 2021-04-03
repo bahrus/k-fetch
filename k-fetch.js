@@ -1,8 +1,4 @@
 export class KFetch extends HTMLElement {
-    constructor() {
-        super(...arguments);
-        this.value = null;
-    }
     attributeChangedCallback() {
         this.do();
     }
@@ -39,6 +35,14 @@ export class KFetch extends HTMLElement {
                     root.innerHTML = html;
                 });
                 break;
+            case 'text':
+                this.style.display = 'none';
+                resp.text().then(text => {
+                    this.value = text;
+                    this.dispatchEvent(new CustomEvent('fetch-complete', {
+                        detail: text,
+                    }));
+                });
         }
     }
 }
