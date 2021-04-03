@@ -13,7 +13,7 @@
     "url": "git+https://github.com/bahrus/k-fetch.git"
   },
   "devDependencies": {
-    "xtal-test": "0.0.48"
+    "xtal-test": "0.0.50"
   },
   "author": "",
   "license": "MIT",
