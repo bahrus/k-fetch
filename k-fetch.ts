@@ -1,5 +1,5 @@
 export class KFetch extends HTMLElement{
-    static observedAttributes = ['href', 'as', 'shadow'];
+    static observedAttributes = ['href', 'as', 'shadow', 'target'];
     attributeChangedCallback(){
         this.do();
     }
@@ -13,6 +13,7 @@ export class KFetch extends HTMLElement{
         
         const as = this.getAttribute('as');
         if(as===null || href===null) return;
+        const target = this.getAttribute('target');
         this._lastHref = href!;
         const resp = await fetch(href!);
         switch(as){
@@ -27,7 +28,7 @@ export class KFetch extends HTMLElement{
                 break;
             case 'html':
                 resp.text().then(html => {
-                    let root : HTMLElement | ShadowRoot = this;
+                    let root : Element | ShadowRoot = target == null ? this : (this.getRootNode() as DocumentFragment).querySelector(target)!;
                     if(this.hasAttribute('shadow')){
                         if(this.shadowRoot === null) this.attachShadow({mode: 'open'});
                         root = this.shadowRoot!;
