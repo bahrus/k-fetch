@@ -10,21 +10,21 @@ export class KFetch extends HTMLElement{
     async do(){
         const href = this.getAttribute('href');
         if(href === this.#lastHref) return;
-        
         const as = this.getAttribute('as') || 'json';
         if(as===null || href===null) return;
         const target = this.getAttribute('target');
         this.#lastHref = href!;
         const resp = await fetch(href!);
         switch(as){
+            case 'text':
             case 'json':
                 this.setAttribute('hidden', '');
-                resp.json().then(data => {
-                    this.value = data;
-                    this.dispatchEvent(new CustomEvent('fetch-complete', {
-                        detail: data,
-                    }));
-                });
+                const data = await resp[as]();
+                this.value = data;
+                this.dispatchEvent(new CustomEvent('fetch-complete', {
+                    detail: data,
+                }));
+                this.dispatchEvent(new Event('change'));
                 break;
             case 'html':
                 resp.text().then(html => {
@@ -36,14 +36,6 @@ export class KFetch extends HTMLElement{
                     root.innerHTML = html;
                 });
                 break;
-            case 'text':
-                this.style.display = 'none';
-                resp.text().then(text=> {
-                    this.value = text;
-                    this.dispatchEvent(new CustomEvent('fetch-complete', {
-                        detail: text,
-                    }));
-                });
         }
     }
     value: any;
