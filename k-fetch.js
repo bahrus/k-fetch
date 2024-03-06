@@ -1,23 +1,25 @@
 export class KFetch extends HTMLElement {
+    static observedAttributes = ['href', 'as', 'shadow', 'target'];
     attributeChangedCallback() {
         this.do();
     }
     connectedCallback() {
         this.do();
     }
+    #lastHref;
     async do() {
         const href = this.getAttribute('href');
-        if (href === this._lastHref)
+        if (href === this.#lastHref)
             return;
-        const as = this.getAttribute('as');
+        const as = this.getAttribute('as') || 'json';
         if (as === null || href === null)
             return;
         const target = this.getAttribute('target');
-        this._lastHref = href;
+        this.#lastHref = href;
         const resp = await fetch(href);
         switch (as) {
             case 'json':
-                this.style.display = 'none';
+                this.setAttribute('hidden', '');
                 resp.json().then(data => {
                     this.value = data;
                     this.dispatchEvent(new CustomEvent('fetch-complete', {
@@ -46,6 +48,6 @@ export class KFetch extends HTMLElement {
                 });
         }
     }
+    value;
 }
-KFetch.observedAttributes = ['href', 'as', 'shadow', 'target'];
 customElements.define('k-fetch', KFetch);

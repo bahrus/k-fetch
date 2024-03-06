@@ -5,8 +5,7 @@
 		"sourceMap": false,
 		"experimentalDecorators": false,
 		"strict": true,
-		"newLine": "LF",
-		"watch": true
+		"newLine": "LF"
 	},
 	"exclude":[
 		"node_modules"
