@@ -27,6 +27,7 @@ export class KFetch extends HTMLElement{
                 this.dispatchEvent(new Event('change'));
                 break;
             case 'html':
+                //TODO: Sanitize unless onload is set
                 resp.text().then(html => {
                     let root : Element | ShadowRoot = target == null ? this : (this.getRootNode() as DocumentFragment).querySelector(target)!;
                     if(this.hasAttribute('shadow')){
