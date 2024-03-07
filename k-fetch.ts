@@ -94,7 +94,7 @@ export class KFetch extends HTMLElement{
                 case 'html':
                     //TODO: Sanitize unless onload is set
                     let root : Element | ShadowRoot = target == null ? this : (this.getRootNode() as DocumentFragment).querySelector(target)!;
-                    const shadow = this.getAttribute('shadow');
+                    const shadow = this.getAttribute('shadow') as ShadowRootMode;
                     if(shadow !== null){
                         if(this.shadowRoot === null) this.attachShadow({mode: shadow});
                         root = this.shadowRoot!;
