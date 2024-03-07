@@ -1,7 +1,11 @@
 <a href="https://nodei.co/npm/k-fetch/"><img src="https://nodei.co/npm/p-fetch.png"></a>
 # k-fetch
 
-<img src="https://badgen.net/bundlephobia/minzip/k-fetch">
+[![NPM version](https://badge.fury.io/js/k-fetch.png)](http://badge.fury.io/js/k-fetch)
+[![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/k-fetch?style=for-the-badge)](https://bundlephobia.com/result?p=k-fetch)
+<img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/k-fetch?compression=gzip">
+<!--[![Playwright Tests](https://github.com/bahrus/k-fetch/actions/workflows/CI.yml/badge.svg?branch=baseline)](https://github.com/bahrus/k-fetch/actions/workflows/CI.yml)-->
+
 
 ## [Demo](https://jsfiddle.net/bahrus/ma0vtbnx/1/)
 
