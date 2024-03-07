@@ -18,3 +18,5 @@ If as=json, a custom event, "fetch-complete" is fired, with the data in the deta
 If as=html, the response is inserted into the innerHTML of the k-fetch element, unless attribute shadow is present, in which case it will first create a shadowRoot, then insert the innerHTML.
 
 k-fetch has no support for "href" or "as" properties, only attributes.
+
+[TODO] cache get's based on localName as the cache (because be-fetching/be-kvetching). 
