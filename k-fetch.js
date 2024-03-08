@@ -81,7 +81,7 @@ export class KFetch extends HTMLElement {
                 return;
             if (href === this.#lastHref)
                 return;
-            if (this.onerror !== null) {
+            if (this.onerror === null) {
                 console.error('onerror required');
                 return;
             }

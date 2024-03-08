@@ -35,7 +35,12 @@ k-fetch caches get's based on the localName of the custom element as the base ke
 ## Sending data to a target:
 
 ```html
-<k-fetch href=https://newton.now.sh/api/v2/integrate/x^2 target=json-viewer[-object]></k-fetch>
+<k-fetch 
+    href=https://newton.now.sh/api/v2/integrate/x^2 
+    target=json-viewer[-object]
+    onerror=console.error(href)
+>
+</k-fetch>
 ...
 <json-viewer -object></json-viewer>
 ```

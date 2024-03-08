@@ -14,7 +14,12 @@
     </script>
 </head>
 <body>
-    <k-fetch href=https://newton.now.sh/api/v2/integrate/x^2 target=json-viewer[-object]></k-fetch>
+    <k-fetch 
+        href=https://newton.now.sh/api/v2/integrate/x^2 
+        target=json-viewer[-object]
+        onerror=console.error(href)
+    >
+    </k-fetch>
     ...
     <json-viewer -object></json-viewer>
     <script type=module>
