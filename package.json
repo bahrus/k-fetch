@@ -16,8 +16,10 @@
   },
   "devDependencies": {
     "@playwright/test": "1.42.1",
-    "be-kvetching": "0.0.2",
     "may-it-serve": "0.0.6"
+  },
+  "dependencies": {
+    "trans-render": "0.0.743"
   },
   "author": "",
   "license": "MIT",

@@ -41,8 +41,11 @@ export class KFetch extends HTMLElement {
     get credentials() {
         return this.getAttribute('credentials') || 'omit';
     }
+    get targetSelector() {
+        return this.getAttribute('target');
+    }
     get target() {
-        const targetSelector = this.getAttribute('target');
+        const targetSelector = this.targetSelector;
         if (targetSelector === null)
             return null;
         return this.getRootNode().querySelector(targetSelector);
@@ -55,6 +58,19 @@ export class KFetch extends HTMLElement {
     }
     validateResp(resp) {
         return true;
+    }
+    async setTargetProp(target, data) {
+        if (target === null)
+            return;
+        const targetSelector = this.targetSelector;
+        if (targetSelector === null)
+            return;
+        const lastPos = targetSelector.lastIndexOf('[');
+        if (lastPos === -1)
+            throw 'NI'; //Not implemented
+        const rawPath = targetSelector.substring(lastPos + 2, targetSelector.length - 1);
+        const { lispToCamel } = await import('trans-render/lib/lispToCamel.js');
+        const propPath = lispToCamel(rawPath);
     }
     #lastHref;
     async do() {
@@ -103,20 +119,27 @@ export class KFetch extends HTMLElement {
             switch (as) {
                 case 'text':
                 case 'json':
-                    this.setAttribute('hidden', '');
+                    this.hidden = true;
                     this.value = data;
                     this.dispatchEvent(new Event('change'));
+                    await this.setTargetProp(target, data);
                     break;
                 case 'html':
-                    //TODO: Sanitize unless onload is set
-                    let root = target == null ? this : this.getRootNode().querySelector(target);
-                    const shadow = this.getAttribute('shadow');
-                    if (shadow !== null) {
-                        if (this.shadowRoot === null)
-                            this.attachShadow({ mode: shadow });
-                        root = this.shadowRoot;
+                    if (this.target !== null) {
+                        this.hidden = true;
+                        await this.setTargetProp(target, data);
                     }
-                    root.innerHTML = data;
+                    else {
+                        const target = this.target || this;
+                        let root = target == null ? this : this.getRootNode().querySelector(target);
+                        const shadow = this.getAttribute('shadow');
+                        if (shadow !== null) {
+                            if (this.shadowRoot === null)
+                                this.attachShadow({ mode: shadow });
+                            root = this.shadowRoot;
+                        }
+                        root.innerHTML = data;
+                    }
                     break;
             }
         }

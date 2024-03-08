@@ -41,8 +41,11 @@ export class KFetch extends HTMLElement{
     get credentials(): RequestCredentials{
         return (this.getAttribute('credentials') as RequestCredentials) || 'omit';
     }
+    get targetSelector(){
+        return this.getAttribute('target');
+    }
     get target(){
-        const targetSelector = this.getAttribute('target');
+        const targetSelector = this.targetSelector;
         if(targetSelector === null) return null;
         return (this.getRootNode() as DocumentFragment).querySelector(targetSelector);
     }
@@ -54,6 +57,16 @@ export class KFetch extends HTMLElement{
     }
     validateResp(resp: Response){
         return true;
+    }
+    async setTargetProp(target: Element | null, data: any){
+        if(target === null) return;
+        const targetSelector = this.targetSelector;
+        if(targetSelector === null) return;
+        const lastPos = targetSelector.lastIndexOf('[');
+        if(lastPos === -1) throw 'NI'; //Not implemented
+        const rawPath =  targetSelector.substring(lastPos + 2, targetSelector.length - 1);
+        const {lispToCamel} = await import('trans-render/lib/lispToCamel.js');
+        const propPath = lispToCamel(rawPath);
     }
     #lastHref: string | undefined;
     async do(){
@@ -101,19 +114,26 @@ export class KFetch extends HTMLElement{
             switch(as){
                 case 'text':
                 case 'json':
-                    this.setAttribute('hidden', '');
+                    this.hidden = true;
                     this.value = data;
                     this.dispatchEvent(new Event('change'));
+                    await this.setTargetProp(target, data);
                     break;
                 case 'html':
-                    //TODO: Sanitize unless onload is set
-                    let root : Element | ShadowRoot = target == null ? this : (this.getRootNode() as DocumentFragment).querySelector(target)!;
-                    const shadow = this.getAttribute('shadow') as ShadowRootMode;
-                    if(shadow !== null){
-                        if(this.shadowRoot === null) this.attachShadow({mode: shadow});
-                        root = this.shadowRoot!;
+                    if(this.target !== null){
+                        this.hidden = true;
+                        await this.setTargetProp(target, data);
+                    }else{
+                        const target = this.target || this;
+                        let root : Element | ShadowRoot = target == null ? this : (this.getRootNode() as DocumentFragment).querySelector(target)!;
+                        const shadow = this.getAttribute('shadow') as ShadowRootMode;
+                        if(shadow !== null){
+                            if(this.shadowRoot === null) this.attachShadow({mode: shadow});
+                            root = this.shadowRoot!;
+                        }
+                        root.innerHTML = data;
                     }
-                    root.innerHTML = data;
+
                     break;
             }
         }catch(e){
