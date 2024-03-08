@@ -24,16 +24,22 @@ export class KFetch extends HTMLElement {
         }
         return defaultVal;
     }
+    get method() {
+        return this.getAttribute('method') || 'GET';
+    }
+    body;
     get init() {
         return {
+            method: this.method,
             headers: {
                 'Accept': this.accept,
             },
-            credentials: this.credentials
+            credentials: this.credentials,
+            body: this.body,
         };
     }
     get credentials() {
-        return this.getAttribute('credentials') || 'include';
+        return this.getAttribute('credentials') || 'omit';
     }
     onerr(e) {
         const err = this.onerror;
