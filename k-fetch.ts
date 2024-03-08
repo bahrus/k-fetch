@@ -81,6 +81,7 @@ export class KFetch extends HTMLElement{
             }
             
             const target = this.target;
+            if(target !== null) target.ariaLive = 'polite';
             this.#lastHref = href!;
             //TODO only cache if get request
             let data: any = cache.get(this.localName)?.get(href);
@@ -110,6 +111,8 @@ export class KFetch extends HTMLElement{
                 if(!cache.has(this.localName)){
                     cache.set(this.localName, new Map());
                 }
+                //TODO increment ariaBusy / decrement in case other components are affecting
+                if(target !== null) target.ariaBusy = 'false';
             }
             
             switch(as){
