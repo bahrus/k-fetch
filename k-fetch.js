@@ -35,7 +35,7 @@ export class KFetch extends HTMLElement {
                 'Accept': this.accept,
             },
             credentials: this.credentials,
-            body: this.body,
+            body: typeof this.body === 'object' ? JSON.stringify(this.body) : this.body,
         };
     }
     get credentials() {
