@@ -71,6 +71,7 @@ export class KFetch extends HTMLElement {
         const rawPath = targetSelector.substring(lastPos + 2, targetSelector.length - 1);
         const { lispToCamel } = await import('trans-render/lib/lispToCamel.js');
         const propPath = lispToCamel(rawPath);
+        target[propPath] = data;
     }
     #lastHref;
     async do() {
