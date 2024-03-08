@@ -41,6 +41,12 @@ export class KFetch extends HTMLElement {
     get credentials() {
         return this.getAttribute('credentials') || 'omit';
     }
+    get target() {
+        const targetSelector = this.getAttribute('target');
+        if (targetSelector === null)
+            return null;
+        return this.getRootNode().querySelector(targetSelector);
+    }
     onerr(e) {
         const err = this.onerror;
         if (typeof err === 'function') {
