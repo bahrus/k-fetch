@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>with target</title>
+    <script type=importmap>
+        {
+            "imports": {
+                "@power-elements/": "../node_modules/@power-elements/",
+                "trans-render/": "../node_modules/trans-render/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <k-fetch href=https://newton.now.sh/api/v2/integrate/x^2 target=json-viewer[-object]></k-fetch>
+    ...
+    <json-viewer -object></json-viewer>
+    <script type=module>
+        import '@power-elements/json-viewer/json-viewer.js';
+        import '../k-fetch.js';
+    </script>
+</body>
+</html>

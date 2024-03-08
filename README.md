@@ -32,6 +32,14 @@ k-fetch has no support for "href" or "as" properties, only attributes.
 
 k-fetch caches get's based on the localName of the custom element as the base key of the cache. 
 
+## Sending data to a target:
+
+```html
+<k-fetch href=https://newton.now.sh/api/v2/integrate/x^2 target=json-viewer[-object]></k-fetch>
+...
+<json-viewer -object></json-viewer>
+```
+
 ## Viewing Demos Locally
 
 Any web server that can serve static files will do, but...
