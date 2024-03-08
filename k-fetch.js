@@ -68,12 +68,15 @@ export class KFetch extends HTMLElement {
                 console.error('onerror required');
                 return;
             }
-            const target = this.getAttribute('target');
+            const target = this.target;
             this.#lastHref = href;
             //TODO only cache if get request
             let data = cache.get(this.localName)?.get(href);
             const as = this.as;
             if (data === undefined) {
+                if (target !== null) {
+                    target.ariaBusy = 'true';
+                }
                 const resp = await fetch(href, this.init);
                 if (!this.validateResp(resp)) {
                     this.onerr(resp);
