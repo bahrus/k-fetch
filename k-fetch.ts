@@ -81,7 +81,7 @@ export class KFetch extends HTMLElement{
             }
             
             const target = this.target;
-            if(target !== null) target.ariaLive = 'polite';
+            if(target !== null && target.ariaLive === null) target.ariaLive = 'polite';
             this.#lastHref = href!;
             //TODO only cache if get request
             let data: any = cache.get(this.localName)?.get(href);

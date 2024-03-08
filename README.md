@@ -40,6 +40,8 @@ k-fetch caches get's based on the localName of the custom element as the base ke
 <json-viewer -object></json-viewer>
 ```
 
+k-fetch will set aria-busy to true while fetch is in progress, and also set aria-live=polite if no aria-live value is found.
+
 ## Viewing Demos Locally
 
 Any web server that can serve static files will do, but...

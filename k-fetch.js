@@ -86,7 +86,7 @@ export class KFetch extends HTMLElement {
                 return;
             }
             const target = this.target;
-            if (target !== null)
+            if (target !== null && target.ariaLive === null)
                 target.ariaLive = 'polite';
             this.#lastHref = href;
             //TODO only cache if get request
