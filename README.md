@@ -22,7 +22,7 @@ as=html shadow=open credentials=omit onerror="console.error(href)"></k-fetch>
     
 ```
 
-Required attributes are href and onerror.  The onerror attribute is required to "opt-in", since the attribute can't pass through any decent sanitizer that prevents xss attacks.
+Required attributes are href and at least one of these attributes: onerror, oninput, onload, onchange.  The reason for insisting on at least one of these on* attributes is:  since these attribute can't pass through any decent sanitizer that prevents xss attacks, the presence of one of them provides some indication that the web site trusts the content from which the data is being retrieved.
 
 If as=json, a custom event, "fetch-complete" is fired, with the data in the detail.  The data is also stored in the "value" field of k-fetch. Also, event "change" is fired. 
 

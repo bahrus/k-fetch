@@ -59,6 +59,9 @@ export class KFetch extends HTMLElement {
     validateResp(resp) {
         return true;
     }
+    validateOn() {
+        return this.onerr !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
+    }
     async setTargetProp(target, data) {
         if (target === null)
             return;
@@ -81,8 +84,8 @@ export class KFetch extends HTMLElement {
                 return;
             if (href === this.#lastHref)
                 return;
-            if (this.onerror === null) {
-                console.error('onerror required');
+            if (!this.validateOn()) {
+                console.error('on* required');
                 return;
             }
             const target = this.target;
