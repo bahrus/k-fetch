@@ -63,7 +63,7 @@ export class KFetch extends HTMLElement{
     validateOn(){
         return this.onerr !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
     }
-    async setTargetProp(target: Element | null, data: any){
+    async setTargetProp(target: Element | null, data: any, shadow: ShadowRootMode | null){
         if(target === null) return;
         const targetSelector = this.targetSelector;
         if(targetSelector === null) return;
@@ -72,7 +72,16 @@ export class KFetch extends HTMLElement{
         const rawPath =  targetSelector.substring(lastPos + 2, targetSelector.length - 1);
         const {lispToCamel} = await import('trans-render/lib/lispToCamel.js');
         const propPath = lispToCamel(rawPath);
-        (<any>target)[propPath] = data;
+        if(shadow !== null && propPath === 'innerHTML'){
+            let root = target.shadowRoot;
+            if(root === null) {
+                root = target.attachShadow({mode: shadow});
+            }
+            root.innerHTML = data;
+        }else{
+            (<any>target)[propPath] = data;
+        }
+        
     }
     #lastHref: string | undefined;
     
@@ -130,16 +139,16 @@ export class KFetch extends HTMLElement{
                     this.hidden = true;
                     this.value = data;
                     this.dispatchEvent(new Event('change'));
-                    await this.setTargetProp(target, data);
+                    await this.setTargetProp(target, data, null);
                     break;
                 case 'html':
+                    const shadow = this.getAttribute('shadow') as ShadowRootMode;
                     if(this.target !== null){
                         this.hidden = true;
-                        await this.setTargetProp(target, data);
+                        await this.setTargetProp(target, data, shadow);
                     }else{
                         const target = this.target || this;
-                        let root : Element | ShadowRoot = target == null ? this : (this.getRootNode() as DocumentFragment).querySelector(target)!;
-                        const shadow = this.getAttribute('shadow') as ShadowRootMode;
+                        let root : Element | ShadowRoot = this;
                         if(shadow !== null){
                             if(this.shadowRoot === null) this.attachShadow({mode: shadow});
                             root = this.shadowRoot!;

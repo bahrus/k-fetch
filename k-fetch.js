@@ -62,7 +62,7 @@ export class KFetch extends HTMLElement {
     validateOn() {
         return this.onerr !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
     }
-    async setTargetProp(target, data) {
+    async setTargetProp(target, data, shadow) {
         if (target === null)
             return;
         const targetSelector = this.targetSelector;
@@ -74,7 +74,16 @@ export class KFetch extends HTMLElement {
         const rawPath = targetSelector.substring(lastPos + 2, targetSelector.length - 1);
         const { lispToCamel } = await import('trans-render/lib/lispToCamel.js');
         const propPath = lispToCamel(rawPath);
-        target[propPath] = data;
+        if (shadow !== null && propPath === 'innerHTML') {
+            let root = target.shadowRoot;
+            if (root === null) {
+                root = target.attachShadow({ mode: shadow });
+            }
+            root.innerHTML = data;
+        }
+        else {
+            target[propPath] = data;
+        }
     }
     #lastHref;
     async do() {
@@ -134,17 +143,17 @@ export class KFetch extends HTMLElement {
                     this.hidden = true;
                     this.value = data;
                     this.dispatchEvent(new Event('change'));
-                    await this.setTargetProp(target, data);
+                    await this.setTargetProp(target, data, null);
                     break;
                 case 'html':
+                    const shadow = this.getAttribute('shadow');
                     if (this.target !== null) {
                         this.hidden = true;
-                        await this.setTargetProp(target, data);
+                        await this.setTargetProp(target, data, shadow);
                     }
                     else {
                         const target = this.target || this;
-                        let root = target == null ? this : this.getRootNode().querySelector(target);
-                        const shadow = this.getAttribute('shadow');
+                        let root = this;
                         if (shadow !== null) {
                             if (this.shadowRoot === null)
                                 this.attachShadow({ mode: shadow });
