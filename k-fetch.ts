@@ -1,3 +1,5 @@
+import { ILoadEvent, loadEventName } from './types';
+
 const cache: Map<string, Map<string, any>> = new Map();
 
 export class KFetch extends HTMLElement{
@@ -109,9 +111,10 @@ export class KFetch extends HTMLElement{
                         data = await resp.json();
                         break;
                 }
-                this.dispatchEvent(new CustomEvent('fetch-complete', {
-                    detail: data,
-                }));
+                // this.dispatchEvent(new CustomEvent('fetch-complete', {
+                //     detail: data,
+                // }));
+                this.dispatchEvent(new LoadEvent(data));
                 if(!cache.has(this.localName)){
                     cache.set(this.localName, new Map());
                 }
@@ -152,3 +155,14 @@ export class KFetch extends HTMLElement{
     value: any;
 }
 customElements.define('k-fetch', KFetch);
+
+// https://github.com/webcomponents-cg/community-protocols/issues/12#issuecomment-872415080
+
+export class LoadEvent extends Event implements ILoadEvent{
+
+    static EventName: loadEventName = 'load';
+
+    constructor(public data: any){
+        super(LoadEvent.EventName);
+    }
+}

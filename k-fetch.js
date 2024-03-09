@@ -115,9 +115,10 @@ export class KFetch extends HTMLElement {
                         data = await resp.json();
                         break;
                 }
-                this.dispatchEvent(new CustomEvent('fetch-complete', {
-                    detail: data,
-                }));
+                // this.dispatchEvent(new CustomEvent('fetch-complete', {
+                //     detail: data,
+                // }));
+                this.dispatchEvent(new LoadEvent(data));
                 if (!cache.has(this.localName)) {
                     cache.set(this.localName, new Map());
                 }
@@ -159,3 +160,12 @@ export class KFetch extends HTMLElement {
     value;
 }
 customElements.define('k-fetch', KFetch);
+// https://github.com/webcomponents-cg/community-protocols/issues/12#issuecomment-872415080
+export class LoadEvent extends Event {
+    data;
+    static EventName = 'load';
+    constructor(data) {
+        super(LoadEvent.EventName);
+        this.data = data;
+    }
+}
