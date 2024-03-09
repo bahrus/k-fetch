@@ -17,7 +17,7 @@
     <k-fetch 
         href=https://newton.now.sh/api/v2/integrate/x^2 
         target=json-viewer[-object]
-        onload="event.data.iam = true"
+        onload="event.data = {iam: true}"
         onerror=console.error(href)
     >
     </k-fetch>

@@ -118,7 +118,9 @@ export class KFetch extends HTMLElement {
                 // this.dispatchEvent(new CustomEvent('fetch-complete', {
                 //     detail: data,
                 // }));
-                this.dispatchEvent(new LoadEvent(data));
+                const loadEvent = new LoadEvent(data);
+                this.dispatchEvent(loadEvent);
+                data = loadEvent.data;
                 if (!cache.has(this.localName)) {
                     cache.set(this.localName, new Map());
                 }
