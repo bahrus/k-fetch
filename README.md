@@ -9,22 +9,24 @@
 
 ## [Demo](https://jsfiddle.net/bahrus/ma0vtbnx/1/)
 
-k-fetch is a small, bare-bones simple fetch web component.  For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch).
+k-fetch is a small, bare-bones simple fetch web component.  For more features (but larger footprint), see [xtal-fetch](https://www.npmjs.com/package/xtal-fetch). k-fetch provides no support for rendering while streaming.  For such support, see alternatives, such as [be-written](https://github.com/bahrus/be-written).
 
-k-fetch can act as a base web component.  [be-kvetching](https://github.com/bahrus/be-kvetching) and [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually can dynamically create such a web component on the fly, declaratively, that extends this base class.
+k-fetch can act as a base web component for "web components as a service".  [be-kvetching](https://github.com/bahrus/be-kvetching) and [be-fetching](https://github.com/bahrus/be-fetching) [TODO] actually do just that - they can dynamically create such a web component on the fly, declaratively, that extends this base class.
 
 Markup:
 
 ```html
 <k-fetch 
 href=https://cors-anywhere.herokuapp.com/https://www.theonion.com/ 
-as=html shadow=open credentials=omit onerror="console.error(href)"></k-fetch>
+as=html shadow=open onerror="console.error(href)"></k-fetch>
     
 ```
 
-Required attributes are href and at least one of these attributes: onerror, oninput, onload, onchange.  The reason for insisting on at least one of these on* attributes is:  since these attribute can't pass through any decent sanitizer that prevents xss attacks, the presence of one of them provides some indication that the web site trusts the content from which the data is being retrieved.
+For this very specific example shown above, due to restrictions of the cors-anywhere utility the link above uses, you will first need to go to https://cors-anywhere.herokuapp.com/corsdemo to unlock the service for a limited amount of time.
 
-If as=json, a custom event, "fetch-complete" is fired, with the data in the detail.  The data is also stored in the "value" field of k-fetch. Also, event "change" is fired. 
+Required attributes are href and at least one of these attributes: onerror, oninput, onload, onchange.  The reason for insisting on at least one of these on* attributes is this:  Since these attributes can't pass through any decent sanitizer that prevents xss attacks, the presence of one or more of them indicates that the web site trusts the content from which the data is being retrieved.
+
+When the fetch is complete, event "load" is fired, which can allow for manipulation of the data.  The (modified) data is then stored in the "value" field of the k-fetch (or subclassed) instance. Also, event "change" is fired. 
 
 If as=html, the response is inserted into the innerHTML of the k-fetch element, unless attribute shadow is present, in which case it will first create a shadowRoot, then insert the innerHTML.
 
