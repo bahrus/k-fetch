@@ -124,9 +124,6 @@ export class KFetch extends HTMLElement {
                         data = await resp.json();
                         break;
                 }
-                // this.dispatchEvent(new CustomEvent('fetch-complete', {
-                //     detail: data,
-                // }));
                 const loadEvent = new LoadEvent(data);
                 this.dispatchEvent(loadEvent);
                 data = loadEvent.data;

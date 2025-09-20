@@ -61,7 +61,7 @@ export class KFetch extends HTMLElement{
         return true;
     }
     validateOn(){
-        return this.onerr !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
+        return this.onerror !== null || this.onload !== null || this.oninput !== null || this.onchange !== null;
     }
     async setTargetProp(target: Element | null, data: any, shadow: ShadowRootMode | null){
         if(target === null) return;
@@ -120,9 +120,6 @@ export class KFetch extends HTMLElement{
                         data = await resp.json();
                         break;
                 }
-                // this.dispatchEvent(new CustomEvent('fetch-complete', {
-                //     detail: data,
-                // }));
                 const loadEvent = new LoadEvent(data);
                 this.dispatchEvent(loadEvent);
                 data = loadEvent.data;

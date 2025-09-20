@@ -5,7 +5,7 @@
   "main": "k-fetch.js",
   "module": "k-fetch.js",
   "scripts": {
-    "serve": "node node_modules/may-it-serve",
+    "serve": "node ./node_modules/spa-ssi/serve.js",
     "test": "playwright test",
     "safari": "npx playwright wk http://localhost:3030",
     "update": "ncu -u && npm install"
@@ -15,12 +15,12 @@
     "url": "git+https://github.com/bahrus/k-fetch.git"
   },
   "devDependencies": {
-    "@playwright/test": "1.42.1",
-    "may-it-serve": "0.0.6",
+    "@playwright/test": "1.55.0",
+    "spa-ssi": "0.0.10",
     "@power-elements/json-viewer": "2.1.1"
   },
   "dependencies": {
-    "trans-render": "0.0.743"
+    "trans-render": "0.0.958"
   },
   "author": "",
   "license": "MIT",
